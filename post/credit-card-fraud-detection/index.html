@@ -1,0 +1,2010 @@
+<!DOCTYPE html>
+<html lang="zh-cn" itemscope itemtype="http://schema.org/WebPage">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>[Machine Learning]Kaggle: 信用卡欺诈识别 - 比海更深</title>
+  
+
+<meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta name="MobileOptimized" content="width"/>
+<meta name="HandheldFriendly" content="true"/>
+
+
+<meta name="applicable-device" content="pc,mobile">
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+<meta name="mobile-web-app-capable" content="yes">
+
+<meta name="author" content="elifelif" />
+  <meta name="description" content="本文以kaggle上的Credit Card Fraud Detection为学习对象，利用XGBoost、Logistic Regression、Random F" />
+
+  <meta name="keywords" content="Machine Learning, Photography, Movie" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.58.3" />
+
+
+<link rel="canonical" href="https://bobbychovip.github.io/post/credit-card-fraud-detection/" />
+
+
+
+
+
+<link rel="icon" href="/favicon.ico" />
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/sass/jane.min.af20b78e95c84de86b00a0242a4a77bd2601700e1b250edf27537d957ac0041d.css" integrity="sha256-ryC3jpXITehrAKAkKkp3vSYBcA4bJQ7fJ1N9lXrABB0=" media="screen" crossorigin="anonymous">
+
+
+
+
+
+<meta property="og:title" content="[Machine Learning]Kaggle: 信用卡欺诈识别" />
+<meta property="og:description" content="本文以kaggle上的Credit Card Fraud Detection为学习对象，利用XGBoost、Logistic Regression、Random F" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://bobbychovip.github.io/post/credit-card-fraud-detection/" />
+<meta property="article:published_time" content="2019-11-07T00:00:00+00:00" />
+<meta property="article:modified_time" content="2019-11-07T00:00:00+00:00" />
+<meta itemprop="name" content="[Machine Learning]Kaggle: 信用卡欺诈识别">
+<meta itemprop="description" content="本文以kaggle上的Credit Card Fraud Detection为学习对象，利用XGBoost、Logistic Regression、Random F">
+
+
+<meta itemprop="datePublished" content="2019-11-07T00:00:00&#43;00:00" />
+<meta itemprop="dateModified" content="2019-11-07T00:00:00&#43;00:00" />
+<meta itemprop="wordCount" content="3648">
+
+
+
+<meta itemprop="keywords" content="Fraud Detection,Machine Learning,Kaggle," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="[Machine Learning]Kaggle: 信用卡欺诈识别"/>
+<meta name="twitter:description" content="本文以kaggle上的Credit Card Fraud Detection为学习对象，利用XGBoost、Logistic Regression、Random F"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+
+
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">比海更深</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <li class="mobile-menu-item">
+        
+          
+          
+            <a class="menu-item-link" href="https://bobbychovip.github.io/">主页</a>
+          
+        
+      </li><li class="mobile-menu-item">
+        
+          
+          
+            <a class="menu-item-link" href="https://bobbychovip.github.io/post/">归档</a>
+          
+        
+      </li><li class="mobile-menu-item">
+        
+          
+          
+            <a class="menu-item-link" href="https://bobbychovip.github.io/tags/">标签</a>
+          
+        
+      </li><li class="mobile-menu-item">
+        
+          
+          
+            <a class="menu-item-link" href="https://bobbychovip.github.io/categories/">分类</a>
+          
+        
+      </li><li class="mobile-menu-item">
+        
+          
+          
+            <a class="menu-item-link" href="https://bobbychovip.github.io/about/">关于</a>
+          
+        
+      </li>
+    
+
+    
+  </ul>
+</nav>
+
+
+  
+    
+
+
+
+
+
+
+  <link rel="stylesheet" href="/lib/photoswipe/photoswipe.min.css" />
+  <link rel="stylesheet" href="/lib/photoswipe/default-skin/default-skin.min.css" />
+
+
+
+
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+<div class="pswp__bg"></div>
+
+<div class="pswp__scroll-wrap">
+    
+    <div class="pswp__container">
+      <div class="pswp__item"></div>
+      <div class="pswp__item"></div>
+      <div class="pswp__item"></div>
+    </div>
+    
+    <div class="pswp__ui pswp__ui--hidden">
+    <div class="pswp__top-bar">
+      
+      <div class="pswp__counter"></div>
+      <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+      <button class="pswp__button pswp__button--share" title="Share"></button>
+      <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+      <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+      
+      
+      <div class="pswp__preloader">
+        <div class="pswp__preloader__icn">
+          <div class="pswp__preloader__cut">
+            <div class="pswp__preloader__donut"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+      <div class="pswp__share-tooltip"></div>
+    </div>
+    <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+    </button>
+    <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+    </button>
+    <div class="pswp__caption">
+      <div class="pswp__caption__center"></div>
+    </div>
+    </div>
+    </div>
+</div>
+
+  
+
+  
+
+  
+
+  <header id="header" class="header container">
+    <div class="logo-wrapper">
+  <a href="/" class="logo">
+    
+      比海更深
+    
+  </a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    
+    
+        <li class="menu-item">
+        
+          
+          
+            <a class="menu-item-link" href="https://bobbychovip.github.io/">主页</a>
+          
+
+        
+
+      </li>
+    
+        <li class="menu-item">
+        
+          
+          
+            <a class="menu-item-link" href="https://bobbychovip.github.io/post/">归档</a>
+          
+
+        
+
+      </li>
+    
+        <li class="menu-item">
+        
+          
+          
+            <a class="menu-item-link" href="https://bobbychovip.github.io/tags/">标签</a>
+          
+
+        
+
+      </li>
+    
+        <li class="menu-item">
+        
+          
+          
+            <a class="menu-item-link" href="https://bobbychovip.github.io/categories/">分类</a>
+          
+
+        
+
+      </li>
+    
+        <li class="menu-item">
+        
+          
+          
+            <a class="menu-item-link" href="https://bobbychovip.github.io/about/">关于</a>
+          
+
+        
+
+      </li>
+    
+
+    
+    
+
+    
+  </ul>
+</nav>
+
+  </header>
+
+  <div id="mobile-panel">
+    <main id="main" class="main bg-llight">
+      <div class="content-wrapper">
+        <div id="content" class="content container">
+          <article class="post bg-white">
+    
+    <header class="post-header">
+      <h1 class="post-title">[Machine Learning]Kaggle: 信用卡欺诈识别</h1>
+      
+      <div class="post-meta">
+        <time datetime="2019-11-07" class="post-time">
+          2019-11-07
+        </time>
+        <div class="post-category">
+            <a href="https://bobbychovip.github.io/categories/machine-learning/"> Machine Learning </a>
+            
+          </div>
+        
+
+        
+        
+
+        
+        
+      </div>
+    </header>
+
+    
+    
+
+    
+    <div class="post-content">
+      
+
+<p>本文以kaggle上的Credit Card Fraud Detection为学习对象，利用XGBoost、Logistic Regression、Random Forest方法对信用卡欺诈进行识别，并将这三种模型的结果通过投票的方式进行聚合得到最终的结果。</p>
+
+<h2 id="1-加载库并读入数据">1. 加载库并读入数据</h2>
+
+<h3 id="1-1-加载库">1.1 加载库</h3>
+
+<pre><code class="language-python"># -*- coding: utf-8 -*-
+#!/usr/bin/env python
+
+import pandas as pd
+import numpy as np
+import seaborn as sns
+import matplotlib.pyplot as plt
+%matplotlib inline
+import itertools
+import xgboost as xgb
+from sklearn.linear_model import LogisticRegression
+from sklearn.ensemble import RandomForestClassifier, VotingClassifier
+from sklearn.model_selection import StratifiedKFold
+from sklearn.metrics import precision_score, recall_score, confusion_matrix, classification_report, roc_curve, precision_recall_curve
+from __future__ import division
+import warnings
+
+# 忽略告警
+warnings.filterwarnings('ignore') 
+</code></pre>
+
+<h3 id="1-2-读入数据">1.2 读入数据</h3>
+
+<pre><code class="language-python">data = pd.read_csv('./data/creditcard.csv')
+</code></pre>
+
+<h2 id="2-数据探索与分析">2. 数据探索与分析</h2>
+
+<p>数据集包含欧洲持卡人于2013年9月通过信用卡进行的交易。该数据集提供两天内发生的交易，其中在284,807笔交易中有492起欺诈行为。数据集非常不平衡，负面类别（欺诈）占所有交易的0.172％。</p>
+
+<p>数据经过PCA降维，特征V1,V2,&hellip;,V28是PCA获得的主要组件，还有交易时间Time、交易金额Amount。每条记录有一个Class，值为1时表示信用卡诈骗（正例），0表示正常消费（负例）。</p>
+
+<h3 id="2-1-变量分布和描述">2.1 变量分布和描述</h3>
+
+<pre><code class="language-python">data.hist (bins=50, figsize=(20,15), color = 'deepskyblue')
+
+plt.show()
+</code></pre>
+
+<p><img src="https://s2.ax1x.com/2019/11/07/MFJkBn.png" alt="png" /></p>
+
+<pre><code class="language-python">data.describe()
+</code></pre>
+
+<p><table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Time</th>
+      <th>V1</th>
+      <th>V2</th>
+      <th>V3</th>
+      <th>V4</th>
+      <th>V5</th>
+      <th>V6</th>
+      <th>V7</th>
+      <th>V8</th>
+      <th>V9</th>
+      <th>&hellip;</th>
+      <th>V21</th>
+      <th>V22</th>
+      <th>V23</th>
+      <th>V24</th>
+      <th>V25</th>
+      <th>V26</th>
+      <th>V27</th>
+      <th>V28</th>
+      <th>Amount</th>
+      <th>Class</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>count</th>
+      <td>284807.000000</td>
+      <td>2.848070e+05</td>
+      <td>2.848070e+05</td>
+      <td>2.848070e+05</td>
+      <td>2.848070e+05</td>
+      <td>2.848070e+05</td>
+      <td>2.848070e+05</td>
+      <td>2.848070e+05</td>
+      <td>2.848070e+05</td>
+      <td>2.848070e+05</td>
+      <td>&hellip;</td>
+      <td>2.848070e+05</td>
+      <td>2.848070e+05</td>
+      <td>2.848070e+05</td>
+      <td>2.848070e+05</td>
+      <td>2.848070e+05</td>
+      <td>2.848070e+05</td>
+      <td>2.848070e+05</td>
+      <td>2.848070e+05</td>
+      <td>284807.000000</td>
+      <td>284807.000000</td>
+    </tr>
+    <tr>
+      <th>mean</th>
+      <td>94813.859575</td>
+      <td>1.165980e-15</td>
+      <td>3.416908e-16</td>
+      <td>-1.373150e-15</td>
+      <td>2.086869e-15</td>
+      <td>9.604066e-16</td>
+      <td>1.490107e-15</td>
+      <td>-5.556467e-16</td>
+      <td>1.177556e-16</td>
+      <td>-2.406455e-15</td>
+      <td>&hellip;</td>
+      <td>1.656562e-16</td>
+      <td>-3.444850e-16</td>
+      <td>2.578648e-16</td>
+      <td>4.471968e-15</td>
+      <td>5.340915e-16</td>
+      <td>1.687098e-15</td>
+      <td>-3.666453e-16</td>
+      <td>-1.220404e-16</td>
+      <td>88.349619</td>
+      <td>0.001727</td>
+    </tr>
+    <tr>
+      <th>std</th>
+      <td>47488.145955</td>
+      <td>1.958696e+00</td>
+      <td>1.651309e+00</td>
+      <td>1.516255e+00</td>
+      <td>1.415869e+00</td>
+      <td>1.380247e+00</td>
+      <td>1.332271e+00</td>
+      <td>1.237094e+00</td>
+      <td>1.194353e+00</td>
+      <td>1.098632e+00</td>
+      <td>&hellip;</td>
+      <td>7.345240e-01</td>
+      <td>7.257016e-01</td>
+      <td>6.244603e-01</td>
+      <td>6.056471e-01</td>
+      <td>5.212781e-01</td>
+      <td>4.822270e-01</td>
+      <td>4.036325e-01</td>
+      <td>3.300833e-01</td>
+      <td>250.120109</td>
+      <td>0.041527</td>
+    </tr>
+    <tr>
+      <th>min</th>
+      <td>0.000000</td>
+      <td>-5.640751e+01</td>
+      <td>-7.271573e+01</td>
+      <td>-4.832559e+01</td>
+      <td>-5.683171e+00</td>
+      <td>-1.137433e+02</td>
+      <td>-2.616051e+01</td>
+      <td>-4.355724e+01</td>
+      <td>-7.321672e+01</td>
+      <td>-1.343407e+01</td>
+      <td>&hellip;</td>
+      <td>-3.483038e+01</td>
+      <td>-1.093314e+01</td>
+      <td>-4.480774e+01</td>
+      <td>-2.836627e+00</td>
+      <td>-1.029540e+01</td>
+      <td>-2.604551e+00</td>
+      <td>-2.256568e+01</td>
+      <td>-1.543008e+01</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+    </tr>
+    <tr>
+      <th>25%</th>
+      <td>54201.500000</td>
+      <td>-9.203734e-01</td>
+      <td>-5.985499e-01</td>
+      <td>-8.903648e-01</td>
+      <td>-8.486401e-01</td>
+      <td>-6.915971e-01</td>
+      <td>-7.682956e-01</td>
+      <td>-5.540759e-01</td>
+      <td>-2.086297e-01</td>
+      <td>-6.430976e-01</td>
+      <td>&hellip;</td>
+      <td>-2.283949e-01</td>
+      <td>-5.423504e-01</td>
+      <td>-1.618463e-01</td>
+      <td>-3.545861e-01</td>
+      <td>-3.171451e-01</td>
+      <td>-3.269839e-01</td>
+      <td>-7.083953e-02</td>
+      <td>-5.295979e-02</td>
+      <td>5.600000</td>
+      <td>0.000000</td>
+    </tr>
+    <tr>
+      <th>50%</th>
+      <td>84692.000000</td>
+      <td>1.810880e-02</td>
+      <td>6.548556e-02</td>
+      <td>1.798463e-01</td>
+      <td>-1.984653e-02</td>
+      <td>-5.433583e-02</td>
+      <td>-2.741871e-01</td>
+      <td>4.010308e-02</td>
+      <td>2.235804e-02</td>
+      <td>-5.142873e-02</td>
+      <td>&hellip;</td>
+      <td>-2.945017e-02</td>
+      <td>6.781943e-03</td>
+      <td>-1.119293e-02</td>
+      <td>4.097606e-02</td>
+      <td>1.659350e-02</td>
+      <td>-5.213911e-02</td>
+      <td>1.342146e-03</td>
+      <td>1.124383e-02</td>
+      <td>22.000000</td>
+      <td>0.000000</td>
+    </tr>
+    <tr>
+      <th>75%</th>
+      <td>139320.500000</td>
+      <td>1.315642e+00</td>
+      <td>8.037239e-01</td>
+      <td>1.027196e+00</td>
+      <td>7.433413e-01</td>
+      <td>6.119264e-01</td>
+      <td>3.985649e-01</td>
+      <td>5.704361e-01</td>
+      <td>3.273459e-01</td>
+      <td>5.971390e-01</td>
+      <td>&hellip;</td>
+      <td>1.863772e-01</td>
+      <td>5.285536e-01</td>
+      <td>1.476421e-01</td>
+      <td>4.395266e-01</td>
+      <td>3.507156e-01</td>
+      <td>2.409522e-01</td>
+      <td>9.104512e-02</td>
+      <td>7.827995e-02</td>
+      <td>77.165000</td>
+      <td>0.000000</td>
+    </tr>
+    <tr>
+      <th>max</th>
+      <td>172792.000000</td>
+      <td>2.454930e+00</td>
+      <td>2.205773e+01</td>
+      <td>9.382558e+00</td>
+      <td>1.687534e+01</td>
+      <td>3.480167e+01</td>
+      <td>7.330163e+01</td>
+      <td>1.205895e+02</td>
+      <td>2.000721e+01</td>
+      <td>1.559499e+01</td>
+      <td>&hellip;</td>
+      <td>2.720284e+01</td>
+      <td>1.050309e+01</td>
+      <td>2.252841e+01</td>
+      <td>4.584549e+00</td>
+      <td>7.519589e+00</td>
+      <td>3.517346e+00</td>
+      <td>3.161220e+01</td>
+      <td>3.384781e+01</td>
+      <td>25691.160000</td>
+      <td>1.000000</td>
+    </tr>
+  </tbody>
+</table>
+<p>8 rows × 31 columns</p></p>
+
+<h3 id="2-2-类别分布">2.2 类别分布</h3>
+
+<p>数据集非常不平衡，正例（欺诈）数量占全部交易量的0.172%。</p>
+
+<pre><code class="language-python">my_pal = {0: 'deepskyblue', 1: 'deeppink'}
+
+plt.figure(figsize = (12, 6))
+ax = sns.countplot(x = 'Class', data = data, palette = my_pal)
+plt.title('Class Distribution')
+plt.show()
+
+# 正常交易量和欺诈交易量以及百分比
+Count_Normal_transacation = len(data[data['Class']==0])
+Count_Fraud_transacation = len(data[data['Class']==1]) 
+Percentage_of_Normal_transacation = float(Count_Normal_transacation)/(Count_Normal_transacation+Count_Fraud_transacation)
+print('% of normal transacation       :{:.3f}'.format(Percentage_of_Normal_transacation*100))
+print('Number of normal transaction   :', Count_Normal_transacation)
+Percentage_of_Fraud_transacation= float(Count_Fraud_transacation)/(Count_Normal_transacation+Count_Fraud_transacation)
+print('% of fraud transacation        :{:.3f}'.format(Percentage_of_Fraud_transacation*100))
+print('Number of fraud transaction    :', Count_Fraud_transacation)
+</code></pre>
+
+<p><img src="https://s2.ax1x.com/2019/11/07/MFJhuj.png" alt="png" /></p>
+
+<pre><code>% of normal transacation       :99.827
+('Number of normal transaction   :', 284315)
+% of fraud transacation        :0.173
+('Number of fraud transaction    :', 492)
+</code></pre>
+
+<h3 id="2-3-时间和类别的关系">2.3 时间和类别的关系</h3>
+
+<p>从时间上看，欺诈在交易活跃和交易少的时段都有发生，在交易很活跃时一些欺诈事件不易被发觉，而交易少的时段都是夜间，此时人们已休息，也易于作案。深夜时正常交易量和欺诈量都较少，此时人们可能都处在睡眠时间。</p>
+
+<pre><code class="language-python">f, (ax1, ax2) = plt.subplots(2, 1, sharex=True, figsize=(15,8))
+
+bins = 50
+
+ax1.hist(data.Time[data.Class == 1], bins = bins, color = 'deeppink')
+ax1.set_title('Fraud')
+
+ax2.hist(data.Time[data.Class == 0], bins = bins, color = 'deepskyblue')
+ax2.set_title('Normal')
+
+plt.xlabel('Time (in Seconds)')
+plt.ylabel('Number of Transactions')
+plt.show()
+</code></pre>
+
+<p><img src="https://s2.ax1x.com/2019/11/07/MFJOv4.png" alt="png" /></p>
+
+<h3 id="2-4-时间-交易金额和类别的关系">2.4 时间、交易金额和类别的关系</h3>
+
+<p>从交易金额来看，大多数欺诈事件的欺诈金额较小，但也有不少欺诈金额在500+以上。</p>
+
+<pre><code class="language-python">f, (ax1, ax2) = plt.subplots(2, 1, sharex=True, figsize=(15,8))
+
+ax1.scatter(data.Time[data.Class == 1], data.Amount[data.Class == 1], color = 'deeppink')
+ax1.set_title('Fraud')
+
+ax2.scatter(data.Time[data.Class == 0], data.Amount[data.Class == 0],  color = 'deepskyblue')
+ax2.set_title('Normal')
+
+plt.xlabel('Time (in Seconds)')
+plt.ylabel('Amount')
+plt.show()
+</code></pre>
+
+<p><img src="https://s2.ax1x.com/2019/11/07/MFYUI0.png" alt="png" /></p>
+
+<h3 id="2-5-其它变量与类别的关系">2.5 其它变量与类别的关系</h3>
+
+<pre><code class="language-python">f, (ax1, ax2) = plt.subplots(1,2,figsize =( 15, 8))
+
+sns.heatmap(data.query('Class==1').drop(['Class','Time'],1).corr(), vmax = .8, square=True, ax = ax1, cmap = 'YlGnBu')
+ax1.set_title('Fraud')
+
+sns.heatmap(data.query('Class==0').drop(['Class','Time'],1).corr(), vmax = .8, square=True, ax = ax2, cmap = 'YlGnBu');
+ax2.set_title('Normal')
+
+plt.show()
+</code></pre>
+
+<p><img src="https://s2.ax1x.com/2019/11/07/MFtCes.png" alt="png" /></p>
+
+<h2 id="3-数据准备">3. 数据准备</h2>
+
+<h3 id="3-1-划分训练集和测试集">3.1 划分训练集和测试集</h3>
+
+<p>训练集用来训练模型和参数调优，占90%。测试集用来评估模型性能，占10%。</p>
+
+<pre><code class="language-python"># 把数据集划分为训练集和测试集，一个用来train(训练) &amp; validation(调参)，另一个是test（评估模型）
+from sklearn.model_selection import train_test_split
+train_set, test_set = train_test_split (data, test_size = 0.1, random_state = 42)
+data = train_set
+test_data = test_set
+</code></pre>
+
+<h3 id="3-2-交易金额amount的归一化">3.2 交易金额Amount的归一化</h3>
+
+<pre><code class="language-python"># Amount归一化
+from sklearn.preprocessing import StandardScaler
+data['normAmount'] = StandardScaler().fit_transform(data['Amount'].values.reshape(-1,1))
+</code></pre>
+
+<p>查看归一化后的效果：</p>
+
+<pre><code class="language-python">f, (ax1, ax2) = plt.subplots(2,1,figsize =( 15, 8))
+
+sns.kdeplot(data['Amount'],shade=True, ax = ax1, color='red')
+ax1.set_title('Before Normalization')
+
+sns.kdeplot(data['normAmount'],shade=True, ax = ax2, color='blue')
+ax2.set_title('After Normalization')
+
+plt.show()
+</code></pre>
+
+<p><img src="https://s2.ax1x.com/2019/11/07/MFtJSO.png" alt="png" /></p>
+
+<h3 id="3-3-删除无用变量">3.3 删除无用变量</h3>
+
+<pre><code class="language-python">data = data.drop(['Amount','Time'],axis=1)
+</code></pre>
+
+<p>检查数据：</p>
+
+<pre><code class="language-python">data.describe()
+</code></pre>
+
+<p><table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>V1</th>
+      <th>V2</th>
+      <th>V3</th>
+      <th>V4</th>
+      <th>V5</th>
+      <th>V6</th>
+      <th>V7</th>
+      <th>V8</th>
+      <th>V9</th>
+      <th>V10</th>
+      <th>&hellip;</th>
+      <th>V21</th>
+      <th>V22</th>
+      <th>V23</th>
+      <th>V24</th>
+      <th>V25</th>
+      <th>V26</th>
+      <th>V27</th>
+      <th>V28</th>
+      <th>Class</th>
+      <th>normAmount</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>count</th>
+      <td>256326.000000</td>
+      <td>256326.000000</td>
+      <td>256326.000000</td>
+      <td>256326.000000</td>
+      <td>256326.000000</td>
+      <td>256326.000000</td>
+      <td>256326.000000</td>
+      <td>256326.000000</td>
+      <td>256326.000000</td>
+      <td>256326.000000</td>
+      <td>&hellip;</td>
+      <td>256326.000000</td>
+      <td>256326.000000</td>
+      <td>256326.000000</td>
+      <td>256326.000000</td>
+      <td>256326.000000</td>
+      <td>256326.000000</td>
+      <td>256326.000000</td>
+      <td>256326.000000</td>
+      <td>256326.000000</td>
+      <td>2.563260e+05</td>
+    </tr>
+    <tr>
+      <th>mean</th>
+      <td>0.000787</td>
+      <td>0.000279</td>
+      <td>-0.000545</td>
+      <td>-0.000420</td>
+      <td>0.000217</td>
+      <td>0.000337</td>
+      <td>0.000506</td>
+      <td>0.000020</td>
+      <td>0.000775</td>
+      <td>-0.000852</td>
+      <td>&hellip;</td>
+      <td>0.000328</td>
+      <td>-0.000705</td>
+      <td>0.000241</td>
+      <td>0.000222</td>
+      <td>-0.000728</td>
+      <td>-0.000560</td>
+      <td>-0.000321</td>
+      <td>0.000216</td>
+      <td>0.001740</td>
+      <td>7.456754e-18</td>
+    </tr>
+    <tr>
+      <th>std</th>
+      <td>1.956494</td>
+      <td>1.648986</td>
+      <td>1.514006</td>
+      <td>1.415594</td>
+      <td>1.381680</td>
+      <td>1.333873</td>
+      <td>1.239372</td>
+      <td>1.192610</td>
+      <td>1.097865</td>
+      <td>1.086855</td>
+      <td>&hellip;</td>
+      <td>0.736526</td>
+      <td>0.725983</td>
+      <td>0.626604</td>
+      <td>0.605236</td>
+      <td>0.521304</td>
+      <td>0.482247</td>
+      <td>0.402277</td>
+      <td>0.329320</td>
+      <td>0.041677</td>
+      <td>1.000002e+00</td>
+    </tr>
+    <tr>
+      <th>min</th>
+      <td>-56.407510</td>
+      <td>-72.715728</td>
+      <td>-48.325589</td>
+      <td>-5.683171</td>
+      <td>-113.743307</td>
+      <td>-26.160506</td>
+      <td>-43.557242</td>
+      <td>-73.216718</td>
+      <td>-13.434066</td>
+      <td>-24.588262</td>
+      <td>&hellip;</td>
+      <td>-34.830382</td>
+      <td>-10.933144</td>
+      <td>-44.807735</td>
+      <td>-2.836627</td>
+      <td>-10.295397</td>
+      <td>-2.604551</td>
+      <td>-9.895244</td>
+      <td>-15.430084</td>
+      <td>0.000000</td>
+      <td>-3.501836e-01</td>
+    </tr>
+    <tr>
+      <th>25%</th>
+      <td>-0.920249</td>
+      <td>-0.598404</td>
+      <td>-0.890516</td>
+      <td>-0.848857</td>
+      <td>-0.690771</td>
+      <td>-0.768232</td>
+      <td>-0.552928</td>
+      <td>-0.208079</td>
+      <td>-0.642234</td>
+      <td>-0.535786</td>
+      <td>&hellip;</td>
+      <td>-0.228425</td>
+      <td>-0.542797</td>
+      <td>-0.161585</td>
+      <td>-0.354460</td>
+      <td>-0.317659</td>
+      <td>-0.327408</td>
+      <td>-0.070740</td>
+      <td>-0.052946</td>
+      <td>0.000000</td>
+      <td>-3.281995e-01</td>
+    </tr>
+    <tr>
+      <th>50%</th>
+      <td>0.018564</td>
+      <td>0.065501</td>
+      <td>0.179232</td>
+      <td>-0.019309</td>
+      <td>-0.054395</td>
+      <td>-0.274532</td>
+      <td>0.040901</td>
+      <td>0.022482</td>
+      <td>-0.050994</td>
+      <td>-0.093601</td>
+      <td>&hellip;</td>
+      <td>-0.029573</td>
+      <td>0.005660</td>
+      <td>-0.010801</td>
+      <td>0.040838</td>
+      <td>0.015092</td>
+      <td>-0.052788</td>
+      <td>0.001470</td>
+      <td>0.011339</td>
+      <td>0.000000</td>
+      <td>-2.630397e-01</td>
+    </tr>
+    <tr>
+      <th>75%</th>
+      <td>1.315616</td>
+      <td>0.804021</td>
+      <td>1.025290</td>
+      <td>0.743958</td>
+      <td>0.611975</td>
+      <td>0.398376</td>
+      <td>0.569886</td>
+      <td>0.327616</td>
+      <td>0.597900</td>
+      <td>0.452858</td>
+      <td>&hellip;</td>
+      <td>0.186277</td>
+      <td>0.528637</td>
+      <td>0.147998</td>
+      <td>0.439788</td>
+      <td>0.350571</td>
+      <td>0.240183</td>
+      <td>0.091141</td>
+      <td>0.078325</td>
+      <td>0.000000</td>
+      <td>-4.454612e-02</td>
+    </tr>
+    <tr>
+      <th>max</th>
+      <td>2.454930</td>
+      <td>22.057729</td>
+      <td>4.226108</td>
+      <td>16.875344</td>
+      <td>34.801666</td>
+      <td>73.301626</td>
+      <td>120.589494</td>
+      <td>20.007208</td>
+      <td>10.392889</td>
+      <td>15.245686</td>
+      <td>&hellip;</td>
+      <td>27.202839</td>
+      <td>10.503090</td>
+      <td>22.528412</td>
+      <td>4.584549</td>
+      <td>7.519589</td>
+      <td>3.517346</td>
+      <td>31.612198</td>
+      <td>33.847808</td>
+      <td>1.000000</td>
+      <td>1.014147e+02</td>
+    </tr>
+  </tbody>
+</table>
+<p>8 rows × 30 columns</p></p>
+
+<h2 id="4-定义评价指标">4. 定义评价指标</h2>
+
+<h3 id="4-1-混淆矩阵">4.1 混淆矩阵</h3>
+
+<pre><code class="language-python"># 混淆矩阵绘图
+def plot_confusion_matrix(cm, classes,
+                          normalize = False,
+                          title = 'Confusion matrix&quot;',
+                          cmap = plt.cm.Blues) :
+    plt.imshow(cm, interpolation = 'nearest', cmap = cmap)
+    plt.title(title)
+    plt.colorbar()
+    tick_marks = np.arange(len(classes))
+    plt.xticks(tick_marks, classes, rotation = 0)
+    plt.yticks(tick_marks, classes)
+
+    thresh = cm.max() / 2.
+    for i, j in itertools.product(range(cm.shape[0]), range(cm.shape[1])) :
+        plt.text(j, i, cm[i, j],
+                 horizontalalignment = 'center',
+                 color = 'white' if cm[i, j] &gt; thresh else 'black')
+
+    plt.tight_layout()
+    plt.ylabel('True label')
+    plt.xlabel('Predicted label')
+
+</code></pre>
+
+<h3 id="4-2-recall-precision-和-f1-score">4.2 Recall, Precision 和 F1_score</h3>
+
+<pre><code class="language-python"># 显示评估指标
+def show_metrics():
+    tp = cm[1,1]
+    fn = cm[1,0]
+    fp = cm[0,1]
+    tn = cm[0,0]
+    print('Precision =     {:.3f}'.format(tp/(tp+fp)))
+    print('Recall    =     {:.3f}'.format(tp/(tp+fn)))
+    print('F1_score  =     {:.3f}'.format(2*(((tp/(tp+fp))*(tp/(tp+fn)))/
+                                                 ((tp/(tp+fp))+(tp/(tp+fn))))))
+</code></pre>
+
+<h3 id="4-3-precision-recall曲线">4.3 Precision-Recall曲线</h3>
+
+<pre><code class="language-python"># 绘制 P-R 曲线
+def plot_precision_recall():
+    plt.step(recall, precision, color = 'b', alpha = 0.2,
+             where = 'post')
+    plt.fill_between(recall, precision, step ='post', alpha = 0.2,
+                 color = 'b')
+
+    plt.plot(recall, precision, linewidth=2)
+    plt.xlim([0.0,1])
+    plt.ylim([0.0,1.05])
+    plt.xlabel('Recall')
+    plt.ylabel('Precision')
+    plt.title('Precision Recall Curve')
+    plt.show();
+</code></pre>
+
+<h3 id="4-4-roc-曲线">4.4 ROC 曲线</h3>
+
+<pre><code class="language-python"># 绘制 ROC 曲线
+def plot_roc():
+    plt.plot(fpr, tpr, label = 'ROC curve', linewidth = 2)
+    plt.plot([0,1],[0,1], 'k--', linewidth = 2)
+    plt.xlim([0.0,0.001])
+    plt.ylim([0.0,1.05])
+    plt.xlabel('False Positive Rate')
+    plt.ylabel('True Positive Rate')
+    plt.title('ROC Curve')
+    plt.show();
+</code></pre>
+
+<h3 id="4-5-特征重要性">4.5 特征重要性</h3>
+
+<pre><code class="language-python">predictors = ['V1', 'V2', 'V3', 'V4', 'V5', 'V6', 'V7', 'V8', 'V9', 'V10',
+       'V11', 'V12', 'V13', 'V14', 'V15', 'V16', 'V17', 'V18', 'V19',
+       'V20', 'V21', 'V22', 'V23', 'V24', 'V25', 'V26', 'V27', 'V28',
+       'Normamount']
+</code></pre>
+
+<p>绘制特征重要性的函数：</p>
+
+<pre><code class="language-python"># 绘制特征重要性
+def plot_feature_importance(model):
+    tmp = pd.DataFrame({'Feature': predictors, 'Feature importance': model.feature_importances_})
+    tmp = tmp.sort_values(by='Feature importance',ascending=False)
+    plt.figure(figsize = (15,8))
+    plt.title('Features importance',fontsize=14)
+    s = sns.barplot(x='Feature',y='Feature importance',data=tmp)
+    s.set_xticklabels(s.get_xticklabels(),rotation=90)
+    plt.show()
+</code></pre>
+
+<h3 id="4-6-定义-x-y-及交叉验证">4.6 定义（X,y）及交叉验证</h3>
+
+<pre><code class="language-python"># 定义 X 和 y
+y = np.array(data.Class.tolist())
+data = data.drop('Class', 1)
+X = np.array(data.as_matrix())
+
+# K 折交叉验证
+skf = StratifiedKFold(n_splits = 5, shuffle = True, random_state = 42)
+for train_index, test_index in skf.split(X, y):
+    X_train, y_train = X[train_index], y[train_index]
+    X_test, y_test = X[test_index], y[test_index]
+
+# 检查数据
+print X.shape
+print X_train.shape
+print X_test.shape
+</code></pre>
+
+<pre><code>(256326, 29)
+(205061, 29)
+(51265, 29)
+</code></pre>
+
+<h2 id="5-logistic-regression-log">5. Logistic Regression (LOG)</h2>
+
+<h3 id="5-1-log-未调优超参数">5.1 LOG - 未调优超参数</h3>
+
+<pre><code class="language-python"># 逻辑斯蒂回归
+log_cfl = LogisticRegression()
+
+log_cfl.fit(X_train, y_train)
+y_pred = log_cfl.predict(X_test)
+y_score = log_cfl.decision_function(X_test)  
+
+# 混淆矩阵 &amp; 评估指标
+cm = confusion_matrix(y_test, y_pred)
+class_names = [0,1]
+plt.figure()
+plot_confusion_matrix(cm, 
+                      classes = class_names, 
+                      title = 'LOG Confusion matrix')
+plt.show()
+
+cm = cm.astype(np.float64)
+
+show_metrics()
+
+# ROC 曲线
+fpr, tpr, t = roc_curve(y_test, y_score)
+plot_roc()
+
+# Precision-recall 曲线
+precision, recall, thresholds = precision_recall_curve(y_test, y_score)
+plot_precision_recall()
+</code></pre>
+
+<p><img src="https://s2.ax1x.com/2019/11/07/MFtc6g.png" alt="png" /></p>
+
+<pre><code>Precision =     0.825
+Recall    =     0.584
+F1_score  =     0.684
+</code></pre>
+
+<p><img src="https://s2.ax1x.com/2019/11/07/MFt4kq.png" alt="png" /></p>
+
+<p><img src="https://s2.ax1x.com/2019/11/07/MFtHcF.png" alt="png" /></p>
+
+<pre><code class="language-python"># 查看当前参数
+from pprint import pprint
+print('Parameters currently in use:\n')
+pprint(log_cfl.get_params())
+</code></pre>
+
+<pre><code>Parameters currently in use:
+
+{'C': 1.0,
+ 'class_weight': None,
+ 'dual': False,
+ 'fit_intercept': True,
+ 'intercept_scaling': 1,
+ 'max_iter': 100,
+ 'multi_class': 'warn',
+ 'n_jobs': None,
+ 'penalty': 'l2',
+ 'random_state': None,
+ 'solver': 'warn',
+ 'tol': 0.0001,
+ 'verbose': 0,
+ 'warm_start': False}
+</code></pre>
+
+<h3 id="5-2-log-gridsearchcv-搜索超参数">5.2 LOG - GridSearchCV 搜索超参数</h3>
+
+<pre><code class="language-python"># 使用GridSearchCV找到最佳的参数组合
+from sklearn.model_selection import GridSearchCV
+param_grid = {
+            'penalty' : ['l1','l2'], 
+            'class_weight' : ['balanced', None], 
+            'C' : [0.1, 1, 10, 100]
+            }
+
+CV_log_cfl = GridSearchCV(estimator = log_cfl, param_grid = param_grid , scoring = 'recall', verbose = 1, n_jobs = -1)
+CV_log_cfl.fit(X_train, y_train)
+
+best_parameters = CV_log_cfl.best_params_
+print('The best parameters for using this model is', best_parameters)
+</code></pre>
+
+<pre><code>Fitting 3 folds for each of 16 candidates, totalling 48 fits
+
+
+[Parallel(n_jobs=-1)]: Using backend LokyBackend with 4 concurrent workers.
+[Parallel(n_jobs=-1)]: Done  48 out of  48 | elapsed:  8.9min finished
+
+
+('The best parameters for using this model is', {'penalty': 'l1', 'C': 0.1, 'class_weight': 'balanced'})
+</code></pre>
+
+<h3 id="5-3-log-超参数更新">5.3 LOG - 超参数更新</h3>
+
+<pre><code class="language-python"># 使用搜索的超参数组合重新构建模型，将结果可视化
+log_cfl = LogisticRegression(C = 0.1, 
+                             penalty = 'l1', 
+                             class_weight = 'balanced')
+log_cfl.fit(X_train, y_train)
+y_pred = log_cfl.predict(X_test)
+y_score = log_cfl.decision_function(X_test)
+
+# 混淆矩阵 &amp; 评估指标
+cm = confusion_matrix(y_test, y_pred)
+class_names = [0,1]
+plt.figure()
+plot_confusion_matrix(cm, 
+                      classes=class_names, 
+                      title='LOG Confusion matrix')
+
+plt.savefig('4.log_cfl_confusion_matrix.png')
+plt.show()
+
+cm = cm.astype(np.float64)
+
+show_metrics()
+
+# ROC 曲线
+fpr, tpr, t = roc_curve(y_test, y_score)
+plot_roc()
+
+# Precision-recall 曲线
+precision, recall, thresholds = precision_recall_curve(y_test, y_score)
+plot_precision_recall()
+
+fpr_log, tpr_log, t_log = fpr, tpr, t
+precision_log, recall_log, thresholds_log = precision, recall, thresholds
+</code></pre>
+
+<p><img src="https://s2.ax1x.com/2019/11/07/MFNCcD.png" alt="png" /></p>
+
+<pre><code>Precision =     0.065
+Recall    =     0.921
+F1_score  =     0.121
+</code></pre>
+
+<p><img src="https://s2.ax1x.com/2019/11/07/MFNn9f.png" alt="png" /></p>
+
+<p><img src="https://s2.ax1x.com/2019/11/07/MFN64x.png" alt="png" /></p>
+
+<h2 id="6-extreme-gradient-boosting-xgb">6. Extreme Gradient Boosting (XGB)</h2>
+
+<h3 id="6-1-xgb-未调优超参数">6.1 XGB - 未调优超参数</h3>
+
+<pre><code class="language-python"># xgb
+xgb_cfl = xgb.XGBClassifier(n_jobs = -1)
+
+xgb_cfl.fit(X_train, y_train)
+y_pred = xgb_cfl.predict(X_test)
+y_score = xgb_cfl.predict_proba(X_test)[:,1]
+
+# 混淆矩阵 &amp; 评估指标
+cm = confusion_matrix(y_test, y_pred)
+class_names = [0,1]
+plt.figure()
+plot_confusion_matrix(cm, 
+                      classes=class_names, 
+                      title='XGB Confusion matrix')
+plt.show()
+
+cm = cm.astype(np.float64)
+
+show_metrics()
+
+# ROC 曲线
+fpr, tpr, t = roc_curve(y_test, y_score)
+plot_roc()
+
+# Precision-recall 曲线
+precision, recall, thresholds = precision_recall_curve(y_test, y_score)
+plot_precision_recall()
+</code></pre>
+
+<p><img src="https://s2.ax1x.com/2019/11/07/MFUBz8.png" alt="png" /></p>
+
+<pre><code>Precision =     0.933
+Recall    =     0.787
+F1_score  =     0.854
+</code></pre>
+
+<p><img src="https://s2.ax1x.com/2019/11/07/MFUlRK.png" alt="png" /></p>
+
+<p><img src="https://s2.ax1x.com/2019/11/07/MFUQG6.png" alt="png" /></p>
+
+<h3 id="6-2-xgb-gridsearchcv-搜索超参数">6.2 XGB - GridSearchCV 搜索超参数</h3>
+
+<pre><code class="language-python"># 使用 GridSearchCV 搜索 XGB 超参数
+param_grid = {
+            'n_estimators': [100, 200, 300, 400]
+              }
+
+CV_xgb_cfl = GridSearchCV(estimator = xgb_cfl, param_grid = param_grid, scoring ='f1', verbose = 2, n_jobs = -1)
+CV_xgb_cfl.fit(X_train, y_train)
+
+best_parameters = CV_xgb_cfl.best_params_
+print(&quot;The best parameters for using this model is&quot;, best_parameters)
+</code></pre>
+
+<pre><code>Fitting 3 folds for each of 4 candidates, totalling 12 fits
+
+
+[Parallel(n_jobs=-1)]: Using backend LokyBackend with 4 concurrent workers.
+[Parallel(n_jobs=-1)]: Done  12 out of  12 | elapsed: 12.5min remaining:    0.0s
+[Parallel(n_jobs=-1)]: Done  12 out of  12 | elapsed: 12.5min finished
+
+
+('The best parameters for using this model is', {'n_estimators': 200})
+</code></pre>
+
+<h3 id="6-3-xgb-超参数更新">6.3 XGB - 超参数更新</h3>
+
+<pre><code class="language-python"># xgb
+xgb_cfl = xgb.XGBClassifier(n_jobs = -1, 
+                            n_estimators = 200)
+
+xgb_cfl.fit(X_train, y_train)
+y_pred = xgb_cfl.predict(X_test)
+y_score = xgb_cfl.predict_proba(X_test)[:,1]
+
+# 混淆矩阵 &amp; 评估指标
+cm = confusion_matrix(y_test, y_pred)
+class_names = [0,1]
+plt.figure()
+plot_confusion_matrix(cm, 
+                      classes = class_names, 
+                      title = 'XGB Confusion matrix')
+plt.savefig('2.xgb_cfl_confusion_matrix.png')
+plt.show()
+
+cm = cm.astype(np.float64)
+
+show_metrics()
+
+# ROC 曲线
+fpr, tpr, t = roc_curve(y_test, y_score)
+plot_roc()
+
+# Precision-recall 曲线
+precision, recall, thresholds = precision_recall_curve(y_test, y_score)
+plot_precision_recall()
+
+fpr_xgb, tpr_xgb, t_xgb = fpr, tpr, t
+precision_xgb, recall_xgb, thresholds_xgb = precision, recall, thresholds
+</code></pre>
+
+<p><img src="https://s2.ax1x.com/2019/11/07/MFUoyF.png" alt="png" /></p>
+
+<pre><code>Precision =     0.935
+Recall    =     0.809
+F1_score  =     0.867
+</code></pre>
+
+<p><img src="https://s2.ax1x.com/2019/11/07/MFUIQU.png" alt="png" /></p>
+
+<p><img src="https://s2.ax1x.com/2019/11/07/MFU4zT.png" alt="png" /></p>
+
+<p>对特征重要程度进行可视化：</p>
+
+<pre><code class="language-python">plot_feature_importance(xgb_cfl)
+</code></pre>
+
+<p><img src="https://s2.ax1x.com/2019/11/07/MFad0J.png" alt="png" /></p>
+
+<h2 id="7-random-forest-rf">7. Random Forest (RF)</h2>
+
+<h3 id="7-1-rf-未调优超参数">7.1 RF - 未调优超参数</h3>
+
+<pre><code class="language-python"># 随机森林
+rf_cfl = RandomForestClassifier(n_jobs = -1,
+                                random_state = 42)
+
+rf_cfl.fit(X_train, y_train)
+y_pred = rf_cfl.predict(X_test)
+y_score = rf_cfl.predict_proba(X_test)[:,1]
+
+# 混淆矩阵
+cm = confusion_matrix(y_test, y_pred)
+class_names = [0,1]
+plt.figure()
+plot_confusion_matrix(cm, 
+                      classes = class_names, 
+                      title = 'RF Confusion matrix')
+plt.show()
+
+cm = cm.astype(np.float64)
+
+show_metrics()
+
+# ROC 曲线
+fpr, tpr, t = roc_curve(y_test, y_score)
+plot_roc()
+
+# Precision-recall 曲线
+precision, recall, thresholds = precision_recall_curve(y_test, y_score)
+plot_precision_recall()
+
+</code></pre>
+
+<p><img src="https://s2.ax1x.com/2019/11/07/MFdMjO.png" alt="png" /></p>
+
+<pre><code>Precision =     0.932
+Recall    =     0.764
+F1_score  =     0.840
+</code></pre>
+
+<p><img src="https://s2.ax1x.com/2019/11/07/MFdvrD.png" alt="png" /></p>
+
+<p><img src="https://s2.ax1x.com/2019/11/07/MFw9IA.png" alt="png" /></p>
+
+<h3 id="7-2-rf-gridsearchcv-搜索超参数">7.2 RF - GridSearchCV 搜索超参数</h3>
+
+<pre><code class="language-python"># 使用G ridSearchCV 搜索 RF 超参数
+from sklearn.model_selection import GridSearchCV
+
+param_grid = {
+            'n_estimators': [100, 200, 500],
+            'max_features': [2, 3],
+            'min_samples_leaf': [1, 2, 4],
+            'min_samples_split': [2, 5, 10]
+            }
+
+CV_rf_cfl = GridSearchCV(estimator = rf_cfl, param_grid = param_grid, scoring = 'f1', verbose = 10, n_jobs = -1)
+CV_rf_cfl.fit(X_train, y_train)
+
+best_parameters = CV_rf_cfl.best_params_
+print(&quot;The best parameters for using this model is&quot;, best_parameters)
+</code></pre>
+
+<pre><code>Fitting 3 folds for each of 54 candidates, totalling 162 fits
+
+
+[Parallel(n_jobs=-1)]: Using backend LokyBackend with 4 concurrent workers.
+[Parallel(n_jobs=-1)]: Done   5 tasks      | elapsed:  3.7min
+[Parallel(n_jobs=-1)]: Done  10 tasks      | elapsed:  8.0min
+[Parallel(n_jobs=-1)]: Done  17 tasks      | elapsed: 13.9min
+[Parallel(n_jobs=-1)]: Done  24 tasks      | elapsed: 19.3min
+[Parallel(n_jobs=-1)]: Done  33 tasks      | elapsed: 26.4min
+[Parallel(n_jobs=-1)]: Done  42 tasks      | elapsed: 35.0min
+[Parallel(n_jobs=-1)]: Done  53 tasks      | elapsed: 46.0min
+[Parallel(n_jobs=-1)]: Done  64 tasks      | elapsed: 57.7min
+[Parallel(n_jobs=-1)]: Done  77 tasks      | elapsed: 69.9min
+[Parallel(n_jobs=-1)]: Done  90 tasks      | elapsed: 87.9min
+[Parallel(n_jobs=-1)]: Done 105 tasks      | elapsed: 106.9min
+[Parallel(n_jobs=-1)]: Done 120 tasks      | elapsed: 129.5min
+[Parallel(n_jobs=-1)]: Done 137 tasks      | elapsed: 152.9min
+[Parallel(n_jobs=-1)]: Done 154 tasks      | elapsed: 176.7min
+[Parallel(n_jobs=-1)]: Done 162 out of 162 | elapsed: 187.3min finished
+
+
+('The best parameters for using this model is', {'max_features': 3, 'min_samples_split': 5, 'n_estimators': 500, 'min_samples_leaf': 1})
+</code></pre>
+
+<h3 id="7-3-rf-超参数更新">7.3 RF - 超参数更新</h3>
+
+<pre><code class="language-python"># 随机深林分类器
+rf_cfl = RandomForestClassifier(n_estimators = 200, 
+                                 max_features = 3, 
+                                 min_samples_leaf = 1, 
+                                 min_samples_split = 2, 
+                                 n_jobs = -1,
+                                random_state = 42)
+
+rf_cfl.fit(X_train, y_train)
+y_pred = rf_cfl.predict(X_test)
+y_score = rf_cfl.predict_proba(X_test)[:,1]
+
+# 混淆矩阵
+cm = confusion_matrix(y_test, y_pred)
+class_names = [0,1]
+plt.figure()
+plot_confusion_matrix(cm, 
+                      classes = class_names, 
+                      title = 'RF Confusion matrix')
+plt.savefig('3.rf_cfl_confusion_matrix.png')
+plt.show()
+
+cm = cm.astype(np.float64)
+
+show_metrics()
+
+# ROC 曲线
+fpr, tpr, t = roc_curve(y_test, y_score)
+plot_roc()
+
+# Precision-recall 曲线
+precision, recall, thresholds = precision_recall_curve(y_test, y_score)
+plot_precision_recall()
+
+fpr_rf, tpr_rf, t_rf = fpr, tpr, t
+precision_rf, recall_rf, thresholds_rf = precision, recall, thresholds
+</code></pre>
+
+<p><img src="https://s2.ax1x.com/2019/11/07/MFwMin.png" alt="png" /></p>
+
+<pre><code>Precision =     0.944
+Recall    =     0.764
+F1_score  =     0.845
+</code></pre>
+
+<p><img src="https://s2.ax1x.com/2019/11/07/MFwGsU.png" alt="png" /></p>
+
+<p><img src="https://s2.ax1x.com/2019/11/07/MFwNdJ.png" alt="png" /></p>
+
+<p>对特征重要程度可视化：</p>
+
+<pre><code class="language-python">plot_feature_importance(rf_cfl)
+</code></pre>
+
+<p><img src="https://s2.ax1x.com/2019/11/07/MFwwJ1.png" alt="png" /></p>
+
+<h2 id="8-votingclassifier-log-xgb-rf-f1-0-881">8. VotingClassifier = LOG - XGB - RF (F1=0.881)</h2>
+
+<h3 id="8-1-votingclassfier">8.1 VotingClassfier</h3>
+
+<pre><code class="language-python">#Voting Classifier
+voting_cfl = VotingClassifier (
+        estimators = [('xgb', xgb_cfl), ('lt', log_cfl), ('rf', rf_cfl)],
+                     voting='soft', weights = [1, 1, 1.33])
+    
+voting_cfl.fit(X_train,y_train)
+
+y_pred = voting_cfl.predict(X_test)
+y_score = voting_cfl.predict_proba(X_test)[:,1]
+
+# 混淆矩阵
+cm = confusion_matrix(y_test, y_pred)
+class_names = [0,1]
+plt.figure()
+plot_confusion_matrix(cm, 
+                      classes = class_names, 
+                      title = 'VOTING Confusion matrix')
+plt.savefig('1.voting_confusion_matrix.png')
+plt.show()
+
+cm = cm.astype(np.float64)
+
+show_metrics()
+
+# ROC 曲线
+fpr, tpr, t = roc_curve(y_test, y_score)
+plot_roc()
+
+# Precision-recall 曲线
+precision, recall, thresholds = precision_recall_curve(y_test, y_score)
+plot_precision_recall()
+
+fpr_voting, tpr_voting, t_voting = fpr, tpr, t
+precision_voting, recall_voting, thresholds_voting = precision, recall, thresholds
+
+</code></pre>
+
+<p><img src="https://s2.ax1x.com/2019/11/07/MFwrQK.png" alt="png" /></p>
+
+<pre><code>Precision =     0.937
+Recall    =     0.831
+F1_score  =     0.881
+</code></pre>
+
+<p><img src="https://s2.ax1x.com/2019/11/07/MFwfJI.png" alt="png" /></p>
+
+<p><img src="https://s2.ax1x.com/2019/11/07/MFwoy8.png" alt="png" /></p>
+
+<h3 id="8-2-precision-recall-threshold-曲线">8.2 Precision - Recall - Threshold 曲线</h3>
+
+<pre><code class="language-python">pr = 0.937
+rec = 0.831
+t = 0.5
+
+# Precision-recall-threshold 曲线 : 
+def plot_precision_recall_vs_threshold(precisions, recalls, thresholds):
+    plt.figure(figsize=(16, 12))
+    plt.title('Precision and Recall Scores (decision threshold)')
+    plt.plot(thresholds, precisions[:-1], 'b-',linewidth=2, label='Precision')
+    plt.plot(thresholds, recalls[:-1], 'g', linewidth=2, label='Recall')
+    plt.axvline(t, color='k', linestyle='--', label='Threshold')
+    plt.axhline(pr, color='blue', linewidth=2, linestyle='--')
+    plt.axhline(rec, color='green', linewidth=2, linestyle='--')
+    plt.ylabel('Score')
+    plt.xlabel('Decision Threshold')
+    plt.legend(loc='best')
+    plt.savefig('5.prec_recc_threshold.png')
+    plt.show();
+</code></pre>
+
+<pre><code class="language-python">plot_precision_recall_vs_threshold(precision, recall, thresholds)
+</code></pre>
+
+<p><img src="https://s2.ax1x.com/2019/11/07/MFwqoj.png" alt="png" /></p>
+
+<h3 id="8-3-比较-roc-曲线-所有模型">8.3 比较 ROC 曲线（所有模型）</h3>
+
+<pre><code class="language-python">def roc_curve_all_models(): 
+    plt.figure(figsize=(16, 12))
+    plt.plot(fpr_rf, tpr_rf, label = 'ROC curve', linewidth = 2)
+    plt.plot(fpr_xgb, tpr_xgb, label = 'ROC curve', linewidth = 2)
+    plt.plot(fpr_log, tpr_log, label = 'ROC curve', linewidth = 2)
+    plt.plot(fpr_voting, tpr_voting, label = 'ROC curve', linewidth = 2)
+    plt.plot([0,1],[0,1], 'k--', linewidth = 2)
+    plt.xlim([0.0,0.001])
+    plt.ylim([0.0,1.05])
+    plt.xlabel('False Positive Rate')
+    plt.ylabel('True Positive Rate')
+    plt.title('ROC')
+    plt.legend(['Rnd','Xgb', 'Log', 'Voting'], loc='upper left')
+    plt.savefig('6.roc.png')
+    plt.show();
+</code></pre>
+
+<pre><code class="language-python">roc_curve_all_models ()
+</code></pre>
+
+<p><img src="https://s2.ax1x.com/2019/11/07/MFwOFs.png" alt="png" /></p>
+
+<h3 id="8-4-比较-precision-recall-曲线-所有模型">8.4 比较 Precision - Recall 曲线（所有模型）</h3>
+
+<pre><code class="language-python">def prec_recall_all_models():
+    plt.figure(figsize=(16, 12))
+    plt.plot(recall_rf, precision_rf, linewidth = 2)
+    plt.plot(recall_xgb, precision_xgb, linewidth = 2)
+    plt.plot(recall_log, precision_log, linewidth = 2)
+    plt.plot(recall_voting, precision_voting, linewidth = 2)
+    plt.scatter(rec, pr, linewidth = 2, color = 'red')
+    plt.axvline(rec, color = 'red', linewidth = 1, linestyle='--')
+    plt.axhline(pr, color = 'red', linewidth = 1, linestyle='--')
+    plt.xlim([0.0,1])
+    plt.ylim([0.0,1.05])
+    plt.xlabel('Recall')
+    plt.ylabel('Precision')
+    plt.title('Precision Recall Curve - PR = 0.937 - REC = 0.831 - F1 = 881 ')
+    plt.legend(['Rnd', 'Xgb', 'Log', 'Voting'], loc='upper right')
+    plt.savefig('7.prec_recc.png')
+    plt.show();
+</code></pre>
+
+<pre><code class="language-python">prec_recall_all_models () 
+</code></pre>
+
+<p><img src="https://s2.ax1x.com/2019/11/07/MF0iTJ.png" alt="png" /></p>
+
+<h2 id="9-votingclassfier-validation-f1-0-884">9. VotingClassfier: Validation (F1 = 0.884)</h2>
+
+<p>用测试集数据 test_data 评估模型性能</p>
+
+<h3 id="9-1-amount归一化-去除无用变量并定义-x-y">9.1 Amount归一化、去除无用变量并定义 X,y</h3>
+
+<pre><code class="language-python"># 归一化 Amount
+from sklearn.preprocessing import StandardScaler
+test_data['normAmount'] = StandardScaler().fit_transform(test_data['Amount'].values.reshape(-1,1))
+</code></pre>
+
+<pre><code class="language-python"># 删除 test_data 中的time和Amount 字段
+test_data = test_data.drop(['Amount','Time'],axis=1)
+</code></pre>
+
+<pre><code class="language-python"># 定义 X &amp; y
+y = np.array(test_data.Class.tolist())
+test_data = test_data.drop('Class', 1)
+X = np.array(test_data.as_matrix())
+
+print X_test.shape
+print X.shape
+</code></pre>
+
+<pre><code>(51265, 29)
+(28481, 29)
+</code></pre>
+
+<h3 id="9-2-votingclassfier在测试集上的表现">9.2 VotingClassfier在测试集上的表现</h3>
+
+<pre><code class="language-python">y_pred = voting_cfl.predict(X)
+y_score = voting_cfl.predict_proba(X)[:,1]
+</code></pre>
+
+<pre><code class="language-python"># 混淆矩阵
+cm = confusion_matrix(y, y_pred)
+class_names = [0,1]
+plt.figure()
+plot_confusion_matrix(cm, 
+                      classes = class_names, 
+                      title = 'VOTING valid Confusion matrix')
+plt.savefig('8.votingvf_cfl_confusion_matrix.png')
+plt.show()
+
+show_metrics()
+
+#ROC
+fpr, tpr, t = roc_curve(y, y_score)
+plot_roc()
+
+#precision recall
+precision, recall, thresholds = precision_recall_curve(y, y_score)
+plot_precision_recall()
+</code></pre>
+
+<p><img src="https://s2.ax1x.com/2019/11/07/MF0M0e.png" alt="png" /></p>
+
+<pre><code>Precision =     0.950
+Recall    =     0.826
+F1_score  =     0.884
+</code></pre>
+
+<p><img src="https://s2.ax1x.com/2019/11/07/MF0Y1P.png" alt="png" /></p>
+
+<p><img src="https://s2.ax1x.com/2019/11/07/MF0rhn.png" alt="png" /></p>
+
+<h3 id="9-3-阈值选择">9.3 阈值选择</h3>
+
+<pre><code class="language-python">thresholds_adj = [0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9]
+
+plt.figure(figsize = (15,15))
+
+j = 1
+for i in thresholds_adj:
+    y_score = voting_cfl.predict_proba(X)[:,1] &gt; i
+    
+    plt.subplot(3,3,j)
+    j += 1
+    
+    cm = confusion_matrix(y, y_score)
+    
+    tp = cm[1,1]
+    fn = cm[1,0]
+    fp = cm[0,1]
+    tn = cm[0,0]
+
+    print('F1_score w/ threshold = %s :'%i, (2*(((tp/(tp+fp))*(tp/(tp+fn)))/
+                                                 ((tp/(tp+fp))+(tp/(tp+fn))))))
+    
+    class_names = [0,1]
+    plot_confusion_matrix(cm, 
+                          classes=class_names, 
+                          title='Threshold = %s'%i) 
+    
+plt.savefig('9.confusion_matrix_thresold_select.png')
+</code></pre>
+
+<pre><code>('F1_score w/ threshold = 0.1 :', 0.052336448598130844)
+('F1_score w/ threshold = 0.2 :', 0.17391304347826086)
+('F1_score w/ threshold = 0.3 :', 0.6046511627906976)
+('F1_score w/ threshold = 0.4 :', 0.8444444444444444)
+('F1_score w/ threshold = 0.5 :', 0.8837209302325583)
+('F1_score w/ threshold = 0.6 :', 0.8674698795180723)
+('F1_score w/ threshold = 0.7 :', 0.8641975308641976)
+('F1_score w/ threshold = 0.8 :', 0.8354430379746834)
+('F1_score w/ threshold = 0.9 :', 0.7567567567567568)
+</code></pre>
+
+<p><img src="https://s2.ax1x.com/2019/11/07/MF0WBF.png" alt="png" /></p>
+
+<p>可见阈值选择0.5时测试集上的 F1 值最大。</p>
+
+    </div>
+
+    
+    
+<div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">elifelif</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+      2019-11-07
+      
+    </span>
+  </p>
+  
+  <p class="copyright-item">
+    <span class="item-title">许可协议</span>
+    <span class="item-content">原创文章，转载请注明出处，谢谢!</span>
+  </p>
+</div>
+
+
+    
+    
+
+    <footer class="post-footer">
+      <div class="post-tags">
+          <a href="https://bobbychovip.github.io/tags/fraud-detection/">Fraud Detection</a>
+          <a href="https://bobbychovip.github.io/tags/machine-learning/">Machine Learning</a>
+          <a href="https://bobbychovip.github.io/tags/kaggle/">Kaggle</a>
+          
+        </div>
+
+      
+      <nav class="post-nav">
+        
+        
+          <a class="next" href="/post/monthly-shot-2/">
+            <span class="next-text nav-default">[Monthly Shot-2]Nanji Island</span>
+            <span class="prev-text nav-mobile">下一篇</span>
+            
+            <i class="iconfont">
+              <svg class="icon" viewBox="0 0 1024 1024" version="1.1"
+  xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+  width="18" height="18">
+  <path d="M332.091514 74.487481l-75.369571 89.491197c-10.963703 12.998035-10.285251 32.864502 1.499144 44.378743l286.278095 300.375162L266.565125 819.058374c-11.338233 12.190647-11.035334 32.285311 0.638543 44.850487l80.46666 86.564541c11.680017 12.583596 30.356378 12.893658 41.662889 0.716314l377.434212-421.426145c11.332093-12.183484 11.041474-32.266891-0.657986-44.844348l-80.46666-86.564541c-1.772366-1.910513-3.706415-3.533476-5.750981-4.877077L373.270379 71.774697C361.493148 60.273758 343.054193 61.470003 332.091514 74.487481z"></path>
+</svg>
+
+            </i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+
+  
+  
+
+  
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+    
+
+  <div id="comments"></div>
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src='//unpkg.com/valine/dist/Valine.min.js'></script>
+  <script>
+    if(window.location.hash){
+        var checkExist = setInterval(function() {
+            if ($(window.location.hash).length) {
+              $('html, body').animate({scrollTop: $(window.location.hash).offset().top-90}, 700);
+              clearInterval(checkExist);
+            }
+        }, 10);
+    }
+  </script>
+  <script type="text/javascript">
+    new Valine({
+        el: '#comments' ,
+        appId: 'dYGJzxNQjsKDumJTBBCPiGXb-9Nh9j0Va',
+        appKey: '81yYJCvnAUDz1RjJcBNgtpgg',
+        notify:  false , 
+        verify:  false , 
+        avatar:'', 
+        placeholder: '说点什么吧...',
+        visitor:  false 
+    });
+  </script>
+
+        </div>
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="icon-links">
+  
+  
+    <a href="https://%09bobbychovip@gmail.com" rel="me noopener" class="iconfont"
+      title="email"  target="_blank"
+      >
+      <svg class="icon" viewBox="0 0 1451 1024" version="1.1"
+  xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+  width="36" height="36">
+  <path d="M664.781909 681.472759 0 97.881301C0 3.997201 71.046997 0 71.046997 0L474.477909 0 961.649408 0 1361.641813 0C1361.641813 0 1432.688811 3.997201 1432.688811 97.881301L771.345323 681.472759C771.345323 681.472759 764.482731 685.154773 753.594283 688.65053L753.594283 688.664858C741.602731 693.493018 729.424896 695.068979 718.077952 694.839748 706.731093 695.068979 694.553173 693.493018 682.561621 688.664858L682.561621 688.65053C671.644501 685.140446 664.781909 681.472759 664.781909 681.472759L664.781909 681.472759ZM718.063616 811.603883C693.779541 811.016482 658.879232 802.205449 619.10784 767.734955 542.989056 701.759633 0 212.052267 0 212.052267L0 942.809523C0 942.809523 0 1024 83.726336 1024L682.532949 1024 753.579947 1024 1348.948139 1024C1432.688811 1024 1432.688811 942.809523 1432.688811 942.809523L1432.688811 212.052267C1432.688811 212.052267 893.138176 701.759633 817.019477 767.734955 777.248 802.205449 742.347691 811.03081 718.063616 811.603883L718.063616 811.603883Z"></path>
+</svg>
+
+    </a>
+  
+    <a href="https://github.com/bobbychovip" rel="me noopener" class="iconfont"
+      title="github"  target="_blank"
+      >
+      <svg class="icon" style="" viewBox="0 0 1024 1024" version="1.1"
+  xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+  width="36" height="36">
+  <path d="M512 12.672c-282.88 0-512 229.248-512 512 0 226.261333 146.688 418.133333 350.08 485.76 25.6 4.821333 34.986667-11.008 34.986667-24.618667 0-12.16-0.426667-44.373333-0.64-87.04-142.421333 30.890667-172.458667-68.693333-172.458667-68.693333C188.672 770.986667 155.008 755.2 155.008 755.2c-46.378667-31.744 3.584-31.104 3.584-31.104 51.413333 3.584 78.421333 52.736 78.421333 52.736 45.653333 78.293333 119.850667 55.68 149.12 42.581333 4.608-33.109333 17.792-55.68 32.426667-68.48-113.706667-12.8-233.216-56.832-233.216-253.013333 0-55.893333 19.84-101.546667 52.693333-137.386667-5.76-12.928-23.04-64.981333 4.48-135.509333 0 0 42.88-13.738667 140.8 52.48 40.96-11.392 84.48-17.024 128-17.28 43.52 0.256 87.04 5.888 128 17.28 97.28-66.218667 140.16-52.48 140.16-52.48 27.52 70.528 10.24 122.581333 5.12 135.509333 32.64 35.84 52.48 81.493333 52.48 137.386667 0 196.693333-119.68 240-233.6 252.586667 17.92 15.36 34.56 46.762667 34.56 94.72 0 68.522667-0.64 123.562667-0.64 140.202666 0 13.44 8.96 29.44 35.2 24.32C877.44 942.592 1024 750.592 1024 524.672c0-282.752-229.248-512-512-512"></path>
+</svg>
+
+    </a>
+  
+    <a href="https://weibo.com/starvie" rel="me noopener" class="iconfont"
+      title="weibo"  target="_blank"
+      >
+      <svg class="icon" viewBox="0 0 1024 1024" version="1.1"
+  xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+  width="36" height="36">
+  <path d="M385.714286 733.714286q12-19.428571 6.285714-39.428571t-25.714286-28.571429q-19.428571-8-41.714286-0.571429t-34.285714 26.285714q-12.571429 19.428571-7.428571 39.142857t24.571429 28.857143 42.571429 1.428571 35.714286-27.142857zm53.714286-69.142857q4.571429-7.428571 2-15.142857t-10-10.571429q-8-2.857143-16.285714 2.857143t-12.285714 10.571429q-9.714286 17.714286 7.428571 25.714286 8 2.857143 16.571429 2.857143t12.571429-10.571429zm99.428571 61.142857q-25.714286 58.285714-90.285714 85.714286t-128 6.857143q-61.142857-19.428571-84.285714-72.285714t3.714286-107.142857q26.857143-53.142857 86.571429-79.428571t120.285714-10.857143q63.428571 16.571429 90.571429 68.285714t1.428571 108.857143zm178.285714-91.428571q-5.142857-54.857143-50.857143-97.142857t-119.142857-62.285714-156.857143-12q-127.428571 13.142857-211.142857 80.857143t-75.714286 151.142857q5.142857 54.857143 50.857143 97.142857t119.142857 62.285714 156.857143 12q127.428571-13.142857 211.142857-80.857143t75.714286-151.142857zm176 2.285714q0 38.857143-21.142857 79.714286t-62.285714 78.285714-96.285714 67.142857-129.142857 47.428571-154.571429 17.714286-157.142857-19.142857-137.428571-53.142857-98-86.285714-37.142857-114q0-65.714286 39.714286-140t112.857143-147.428571q96.571429-96.571429 195.142857-134.857143t140.857143 4q37.142857 36.571429 11.428571 119.428571-2.285714 8-0.571429 11.428571t5.714286 4 8.285714 2.857143 7.714286-2l3.428571-1.142857q79.428571-33.714286 140.571429-33.714286t87.428571 34.857143q25.714286 36 0 101.714286-1.142857 7.428571-2.571429 11.428571t2.571429 7.142857 6.857143 4.285714 9.714286 3.428571q32.571429 10.285714 58.857143 26.857143t45.714286 46.571429 19.428571 66.571429zm-42.285714-356.571429q24 26.857143 31.142857 62t-3.714286 67.142857q-4.571429 13.142857-16.857143 19.428571t-25.428571 2.285714q-13.142857-4.571429-19.428571-16.857143t-2.285714-25.428571q11.428571-36-13.714286-63.428571t-61.142857-20q-13.714286 2.857143-25.714286-4.571429t-14.285714-21.142857q-2.857143-13.714286 4.571429-25.428571t21.142857-14.571429q34.285714-7.428571 68 3.142857t57.714286 37.428571zm103.428571-93.142857q49.714286 54.857143 64.285714 127.142857t-7.714286 138q-5.142857 15.428571-19.428571 22.857143t-29.714286 2.285714-22.857143-19.428571-2.857143-29.714286q16-46.857143 5.714286-98.285714t-45.714286-90.285714q-35.428571-39.428571-84.571429-54.571429t-98.857143-4.857143q-16 3.428571-29.714286-5.428571t-17.142857-24.857143 5.428571-29.428571 24.857143-16.857143q70.285714-14.857143 139.428571 6.571429t118.857143 76.857143z"></path>
+</svg>
+
+    </a>
+  
+    <a href="https://www.zhihu.com/people/cao-bo-76-67/" rel="me noopener" class="iconfont"
+      title="zhihu"  target="_blank"
+      >
+      <svg class="icon" viewBox="0 0 1024 1024" version="1.1"
+  xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+  width="36" height="36">
+  <path d="M351.791182 562.469462l192.945407 0c0-45.367257-21.3871-71.939449-21.3871-71.939449L355.897709 490.530013c3.977591-82.182744 7.541767-187.659007 8.816806-226.835262l159.282726 0c0 0-0.86367-67.402109-18.578124-67.402109s-279.979646 0-279.979646 0 16.850783-88.141456 39.318494-127.053698c0 0-83.60514-4.510734-112.121614 106.962104S81.344656 355.077018 76.80834 367.390461c-4.536316 12.313443 24.62791 5.832845 36.941354 0 12.313443-5.832845 68.050885-25.924439 84.252893-103.69571l86.570681 0c1.165546 49.28652 4.596691 200.335724 3.515057 226.835262L109.86113 490.530013c-25.275663 18.147312-33.701566 71.939449-33.701566 71.939449L279.868105 562.469462c-8.497535 56.255235-23.417339 128.763642-44.275389 167.210279-33.05279 60.921511-50.55235 116.65793-169.802314 212.576513 0 0-19.442818 14.257725 40.829917 9.073656 60.273758-5.185093 117.305683-20.739347 156.840094-99.807147 20.553105-41.107233 41.805128-93.250824 58.386782-146.138358l-0.055259 0.185218 167.855986 193.263655c0 0 22.035876-51.847855 5.832845-108.880803L371.045711 650.610918l-42.1244 31.157627-0.045025 0.151449c11.69946-41.020252 20.11206-81.5749 22.726607-116.858498C351.665315 564.212152 351.72876 563.345412 351.791182 562.469462z"></path>
+  <path d="M584.918753 182.033893l0 668.840094 70.318532 0 28.807093 80.512708 121.875768-80.512708 153.600307 0L959.520453 182.033893 584.918753 182.033893zM887.150192 778.934538l-79.837326 0-99.578949 65.782216-23.537066-65.782216-24.855084 0L659.341766 256.673847l227.807403 0L887.149169 778.934538z"></path>
+</svg>
+
+    </a>
+  
+    <a href="https://www.douban.com/people/caobo1204/" rel="me noopener" class="iconfont"
+      title="douban"  target="_blank"
+      >
+      <svg class="icon" style="" viewBox="0 0 1024 1024" version="1.1"
+  xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+  width="36" height="36">
+  <path d="M926.917973 37.80608C959.65184 37.80608 986.19392 64.34816 986.19392 97.082027L986.19392 926.917973C986.19392 959.65184 959.65184 986.19392 926.917973 986.19392L97.082027 986.19392C64.34816 986.19392 37.80608 959.65184 37.80608 926.917973L37.80608 97.082027C37.80608 64.34816 64.34816 37.80608 97.082027 37.80608zM176.653653 176.19968 176.653653 252.678827 825.658027 252.678827 825.658027 176.19968zM217.719467 316.146347 217.719467 628.08064 273.524053 628.08064 341.292373 770.39616 157.259093 770.39616 157.259093 845.417813 842.949973 845.417813 842.949973 770.39616 654.226773 770.39616 722.899627 628.08064 783.67744 628.08064 783.67744 316.146347zM684.885333 392.891733 684.885333 553.987413 312.576 553.987413 312.576 392.891733zM570.770773 770.39616 426.653013 770.39616 359.621973 628.08064 639.443627 628.08064z"></path>
+</svg>
+
+    </a>
+  
+    <a href="https://space.bilibili.com/10539471" rel="me noopener" class="iconfont"
+      title="bilibili"  target="_blank"
+      >
+      <svg
+  class="icon" style="" viewBox="0 0 1024 1024" version="1.1" width="36"
+  height="36" id="svg8">
+  <path
+      style=""
+      d="M 744.60599,0.00486267 A 41.779915,41.779915 0 0 0 710.4184,18.673394 L 548.5048,255.32642 h -11.70046 a 41.779915,41.779915 0 0 0 -10.80295,-7.84928 L 235.66,97.084498 a 41.779915,41.779915 0 0 0 -20.07193,-4.960864 41.779915,41.779915 0 0 0 -18.3748,79.145436 L 359.4859,255.32642 H 128.16909 c -49.458302,0 -89.27932,39.82105 -89.27932,89.27932 v 508.65224 c 0,49.4583 39.821018,89.27934 89.27932,89.27934 h 19.48445 C 149.12802,984.5043 179.92773,1024 224.79179,1024 c 44.86407,0 75.66379,-39.4957 77.13826,-81.46268 H 719.98116 C 721.45559,984.5043 752.25533,1024 797.1194,1024 c 44.86406,0 75.6638,-39.4957 77.13824,-81.46268 h 21.57323 c 49.45831,0 89.27936,-39.82104 89.27936,-89.27934 V 344.60574 c 0,-49.45827 -39.82105,-89.27932 -89.27936,-89.27932 H 649.74567 L 779.38103,65.866924 A 41.779915,41.779915 0 0 0 744.60599,0.00486267 Z M 644.49108,418.70871 c 6.29985,0.21538 12.44451,2.01107 17.86888,5.22196 l 171.36218,98.10771 c 18.23417,10.21935 24.63334,33.34627 14.24614,51.48533 -10.38726,18.13909 -33.57344,24.32718 -51.61587,13.77296 L 624.9903,489.18895 c -15.21356,-8.41858 -22.66871,-26.1765 -18.03211,-42.93436 4.63664,-16.75784 20.15573,-28.14465 37.53289,-27.54588 z M 350.2006,432.31846 c 16.89952,0.0317 31.69582,11.33328 36.17844,27.62747 4.48262,16.2942 -2.44981,33.57765 -16.95507,42.24898 l -140.7157,86.91312 c -17.68528,11.18244 -41.09629,5.77692 -52.08912,-12.02686 -10.99282,-17.80373 -5.33855,-41.15658 12.58167,-51.95857 L 329.9002,438.2095 c 6.0643,-3.86439 13.10951,-5.90891 20.3004,-5.89104 z M 501.605,641.53985 c 3.75002,-0.15248 7.48645,0.53903 10.93349,2.0235 0.15842,0.0637 0.31618,0.12888 0.47325,0.19582 0.59328,0.27092 1.17574,0.56489 1.74609,0.88121 0.15868,0.0854 0.31643,0.17233 0.47325,0.2611 0.55694,0.32165 1.10131,0.66458 1.63185,1.02807 0.16455,0.1123 0.32777,0.2265 0.48956,0.34269 0.50382,0.36781 0.99371,0.75428 1.46868,1.15864 0.18724,0.15504 0.37218,0.31282 0.55484,0.47323 0.43271,0.38784 0.8518,0.79061 1.25653,1.20756 0.15449,0.16114 0.30679,0.32437 0.45693,0.48959 0.40798,0.44266 0.79989,0.89988 1.17494,1.37076 0.17799,0.22544 0.35205,0.45395 0.5222,0.68538 0.25932,0.34701 0.50964,0.70071 0.75064,1.06071 0.26712,0.39516 0.52286,0.79784 0.76699,1.20757 0.16907,0.29043 0.33231,0.58424 0.48957,0.88123 0.21836,0.41297 0.42513,0.83199 0.62009,1.25653 0.14836,0.32333 0.28983,0.64976 0.42429,0.97911 0.21319,0.51552 0.40915,1.03801 0.58747,1.5666 0.0677,0.19499 0.13296,0.39085 0.19582,0.58748 0.18652,0.60823 0.34984,1.22334 0.48957,1.84399 0.0397,0.16277 0.0779,0.32601 0.11423,0.48957 0.1436,0.69112 0.25788,1.38801 0.34269,2.08877 0.005,0.0381 0.0111,0.0761 0.0163,0.11424 0.0857,0.78056 0.13474,1.56471 0.14687,2.34988 0.005,0.0543 0.0111,0.10879 0.0163,0.1632 0,0 -0.008,1.12132 0,1.45234 0,0 -0.14697,17.84761 5.89102,34.12231 3.01902,8.13734 7.33278,15.10615 12.61433,19.61501 5.28157,4.50889 11.42894,7.62081 23.64572,7.62081 12.2168,0 18.36416,-3.11192 23.64573,-7.62081 5.28154,-4.50886 9.5953,-11.47767 12.6143,-19.61501 6.03799,-16.2747 5.89103,-34.12231 5.89103,-34.12231 -0.44885,-13.87045 10.45922,-25.46302 24.3311,-25.86506 13.87189,-0.40201 25.42828,10.53953 25.78348,24.41272 0,0 1.11929,25.7226 -9.00791,53.01927 -5.06359,13.64832 -13.1986,28.46036 -27.05631,40.29073 -13.85772,11.83039 -33.5454,19.63135 -56.20142,19.63135 -22.65603,0 -42.34371,-7.80096 -56.20141,-19.63135 -4.1801,-3.56856 -7.78733,-7.42433 -10.99878,-11.42303 -3.21235,4.00037 -6.81703,7.85309 -10.99876,11.42303 -13.85773,11.83039 -33.5454,19.63135 -56.20144,19.63135 -22.65601,0 -42.3437,-7.80096 -56.2014,-19.63135 -13.85775,-11.83037 -21.99272,-26.64241 -27.05632,-40.29073 -10.12725,-27.29667 -9.00789,-53.01928 -9.00789,-53.01927 0.20714,-13.83687 11.58744,-24.88848 25.42444,-24.69013 14.1263,0.19991 25.2971,12.0278 24.69011,26.14247 0,0 -0.14697,17.84761 5.89103,34.12231 3.01902,8.13734 7.31646,15.10615 12.598,19.61501 5.28155,4.50889 11.44526,7.62081 23.66203,7.62081 12.21681,0 18.36418,-3.11192 23.64573,-7.62081 5.28154,-4.50886 9.57899,-11.47767 12.598,-19.61501 5.76352,-15.53489 5.89112,-32.05691 5.89103,-33.56746 0.006,-0.37466 0.0111,-1.05336 0.0163,-1.20759 -0.0117,-0.74583 0.0105,-1.49177 0.0652,-2.23565 0.009,-0.15784 0.0204,-0.31561 0.0327,-0.47324 0.14204,-1.56859 0.43163,-3.12027 0.86487,-4.63449 0.0213,-0.0763 0.0433,-0.15244 0.0652,-0.22848 3.0335,-10.25748 12.24157,-17.46007 22.92769,-17.93417 z"
+      id="rect824"/>
+</svg>
+
+    </a>
+
+
+<a href="https://bobbychovip.github.io/index.xml" rel="noopener alternate" type="application/rss&#43;xml"
+    class="iconfont" title="rss" target="_blank">
+    <svg class="icon" viewBox="0 0 1024 1024" version="1.1"
+  xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+  width="30" height="30">
+  <path d="M819.157333 1024C819.157333 574.592 449.408 204.8 0 204.8V0c561.706667 0 1024 462.293333 1024 1024h-204.842667zM140.416 743.04a140.8 140.8 0 0 1 140.501333 140.586667A140.928 140.928 0 0 1 140.074667 1024C62.72 1024 0 961.109333 0 883.626667s62.933333-140.544 140.416-140.586667zM678.784 1024h-199.04c0-263.210667-216.533333-479.786667-479.744-479.786667V345.173333c372.352 0 678.784 306.517333 678.784 678.826667z"></path>
+</svg>
+
+  </a>
+   
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - <a class="theme-link" href="https://github.com/xianmin/hugo-theme-jane">Jane</a>
+  </span>
+
+  <span class="copyright-year">
+    &copy;
+    2019
+    <span class="heart">
+      
+      <i class="iconfont">
+        <svg class="icon" viewBox="0 0 1025 1024" version="1.1"
+  xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+  width="14" height="14">
+  <path d="M1000.1 247.9c-15.5-37.3-37.6-70.6-65.7-98.9-54.4-54.8-125.8-85-201-85-85.7 0-166 39-221.4 107.4C456.6 103 376.3 64 290.6 64c-75.1 0-146.5 30.4-201.1 85.6-28.2 28.5-50.4 61.9-65.8 99.3-16 38.8-24 79.9-23.6 122.2 0.7 91.7 40.1 177.2 108.1 234.8 3.1 2.6 6 5.1 8.9 7.8 14.9 13.4 58 52.8 112.6 102.7 93.5 85.5 209.9 191.9 257.5 234.2 7 6.1 15.8 9.5 24.9 9.5 9.2 0 18.1-3.4 24.9-9.5 34.5-30.7 105.8-95.9 181.4-165 74.2-67.8 150.9-138 195.8-178.2 69.5-57.9 109.6-144.4 109.9-237.3 0.1-42.5-8-83.6-24-122.2z"
+   fill="#8a8a8a"></path>
+</svg>
+
+      </i>
+    </span><span class="author">
+        elifelif
+        
+      </span></span>
+
+  
+  
+
+  
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont">
+        
+        <svg class="icon" viewBox="0 0 1024 1024" version="1.1"
+  xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+  width="35" height="35">
+  <path d="M510.866688 227.694839 95.449397 629.218702l235.761562 0-2.057869 328.796468 362.40389 0L691.55698 628.188232l241.942331-3.089361L510.866688 227.694839zM63.840492 63.962777l894.052392 0 0 131.813095L63.840492 195.775872 63.840492 63.962777 63.840492 63.962777zM63.840492 63.962777"></path>
+</svg>
+
+      </i>
+    </div>
+  </div>
+  
+<script type="text/javascript" src="/lib/jquery/jquery-3.2.1.min.js"></script>
+  <script type="text/javascript" src="/lib/slideout/slideout-1.0.1.min.js"></script>
+
+
+
+
+<script type="text/javascript" src="/js/main.638251f4230630f0335d8c6748e53a96f94b72670920b60c09a56fdc8bece214.js" integrity="sha256-Y4JR9CMGMPAzXYxnSOU6lvlLcmcJILYMCaVv3Ivs4hQ=" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+    <script type="text/javascript" src="/js/load-photoswipe.js"></script>
+    <script type="text/javascript" src="/lib/photoswipe/photoswipe.min.js"></script>
+    <script type="text/javascript" src="/lib/photoswipe/photoswipe-ui-default.min.js"></script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

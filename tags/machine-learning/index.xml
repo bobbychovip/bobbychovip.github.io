@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Machine Learning on 比海更深</title>
+    <link>https://bobbychovip.github.io/tags/machine-learning/</link>
+    <description>Recent content in Machine Learning on 比海更深</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Thu, 07 Nov 2019 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://bobbychovip.github.io/tags/machine-learning/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>[Machine Learning]Kaggle: 信用卡欺诈识别</title>
+      <link>https://bobbychovip.github.io/post/credit-card-fraud-detection/</link>
+      <pubDate>Thu, 07 Nov 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://bobbychovip.github.io/post/credit-card-fraud-detection/</guid>
+      <description>本文以kaggle上的Credit Card Fraud Detection为学习对象，利用XGBoost、Logistic Regression、Random F</description>
+    </item>
+    
+  </channel>
+</rss>

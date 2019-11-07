@@ -6,10 +6,37 @@
     <description>Recent content in Tags on 比海更深</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Mon, 28 Oct 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Thu, 07 Nov 2019 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="https://bobbychovip.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Fraud Detection</title>
+      <link>https://bobbychovip.github.io/tags/fraud-detection/</link>
+      <pubDate>Thu, 07 Nov 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://bobbychovip.github.io/tags/fraud-detection/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Kaggle</title>
+      <link>https://bobbychovip.github.io/tags/kaggle/</link>
+      <pubDate>Thu, 07 Nov 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://bobbychovip.github.io/tags/kaggle/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Machine Learning</title>
+      <link>https://bobbychovip.github.io/tags/machine-learning/</link>
+      <pubDate>Thu, 07 Nov 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://bobbychovip.github.io/tags/machine-learning/</guid>
+      <description></description>
+    </item>
     
     <item>
       <title>Island</title>
