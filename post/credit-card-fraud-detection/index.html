@@ -23,7 +23,8 @@
 <meta name="mobile-web-app-capable" content="yes">
 
 <meta name="author" content="elifelif" />
-  <meta name="description" content="本文以kaggle上的Credit Card Fraud Detection为学习对象，利用XGBoost、Logistic Regression、Random F" />
+  <meta name="description" content="本文以kaggle上的Credit Card Fraud Detection为学习对象，利用XGBoost、Logistic Regression、Random Forest方法对信用卡欺诈进行识别，并将这三种模型的结果通过投票的方式进行聚合得到最终的结果。
+1. 加载库并读入数据 1.1 加载库 # -*- coding: utf-8 -*- #!/usr/bin/env python import pandas as pd import numpy as np import seaborn as sns import matplotlib.pyplot as plt %matplotlib inline import itertools import xgboost as xgb from sklearn.linear_model import LogisticRegression from sklearn.ensemble import RandomForestClassifier, VotingClassifier from sklearn.model_selection import StratifiedKFold from sklearn.metrics import precision_score, recall_score, confusion_matrix, classification_report, roc_curve, precision_recall_curve from __future__ import division import warnings # 忽略告警 warnings.filterwarnings(&#39;ignore&#39;) " />
 
   <meta name="keywords" content="Machine Learning, Photography, Movie" />
 
@@ -60,13 +61,63 @@
 
 
 <meta property="og:title" content="[Machine Learning]Kaggle: 信用卡欺诈识别" />
-<meta property="og:description" content="本文以kaggle上的Credit Card Fraud Detection为学习对象，利用XGBoost、Logistic Regression、Random F" />
+<meta property="og:description" content="本文以kaggle上的Credit Card Fraud Detection为学习对象，利用XGBoost、Logistic Regression、Random Forest方法对信用卡欺诈进行识别，并将这三种模型的结果通过投票的方式进行聚合得到最终的结果。
+
+1. 加载库并读入数据
+
+1.1 加载库
+
+# -*- coding: utf-8 -*-
+#!/usr/bin/env python
+
+import pandas as pd
+import numpy as np
+import seaborn as sns
+import matplotlib.pyplot as plt
+%matplotlib inline
+import itertools
+import xgboost as xgb
+from sklearn.linear_model import LogisticRegression
+from sklearn.ensemble import RandomForestClassifier, VotingClassifier
+from sklearn.model_selection import StratifiedKFold
+from sklearn.metrics import precision_score, recall_score, confusion_matrix, classification_report, roc_curve, precision_recall_curve
+from __future__ import division
+import warnings
+
+# 忽略告警
+warnings.filterwarnings(&#39;ignore&#39;) 
+" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://bobbychovip.github.io/post/credit-card-fraud-detection/" />
 <meta property="article:published_time" content="2019-11-07T00:00:00+00:00" />
 <meta property="article:modified_time" content="2019-11-07T00:00:00+00:00" />
 <meta itemprop="name" content="[Machine Learning]Kaggle: 信用卡欺诈识别">
-<meta itemprop="description" content="本文以kaggle上的Credit Card Fraud Detection为学习对象，利用XGBoost、Logistic Regression、Random F">
+<meta itemprop="description" content="本文以kaggle上的Credit Card Fraud Detection为学习对象，利用XGBoost、Logistic Regression、Random Forest方法对信用卡欺诈进行识别，并将这三种模型的结果通过投票的方式进行聚合得到最终的结果。
+
+1. 加载库并读入数据
+
+1.1 加载库
+
+# -*- coding: utf-8 -*-
+#!/usr/bin/env python
+
+import pandas as pd
+import numpy as np
+import seaborn as sns
+import matplotlib.pyplot as plt
+%matplotlib inline
+import itertools
+import xgboost as xgb
+from sklearn.linear_model import LogisticRegression
+from sklearn.ensemble import RandomForestClassifier, VotingClassifier
+from sklearn.model_selection import StratifiedKFold
+from sklearn.metrics import precision_score, recall_score, confusion_matrix, classification_report, roc_curve, precision_recall_curve
+from __future__ import division
+import warnings
+
+# 忽略告警
+warnings.filterwarnings(&#39;ignore&#39;) 
+">
 
 
 <meta itemprop="datePublished" content="2019-11-07T00:00:00&#43;00:00" />
@@ -78,7 +129,32 @@
 <meta itemprop="keywords" content="Fraud Detection,Machine Learning,Kaggle," />
 <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="[Machine Learning]Kaggle: 信用卡欺诈识别"/>
-<meta name="twitter:description" content="本文以kaggle上的Credit Card Fraud Detection为学习对象，利用XGBoost、Logistic Regression、Random F"/>
+<meta name="twitter:description" content="本文以kaggle上的Credit Card Fraud Detection为学习对象，利用XGBoost、Logistic Regression、Random Forest方法对信用卡欺诈进行识别，并将这三种模型的结果通过投票的方式进行聚合得到最终的结果。
+
+1. 加载库并读入数据
+
+1.1 加载库
+
+# -*- coding: utf-8 -*-
+#!/usr/bin/env python
+
+import pandas as pd
+import numpy as np
+import seaborn as sns
+import matplotlib.pyplot as plt
+%matplotlib inline
+import itertools
+import xgboost as xgb
+from sklearn.linear_model import LogisticRegression
+from sklearn.ensemble import RandomForestClassifier, VotingClassifier
+from sklearn.model_selection import StratifiedKFold
+from sklearn.metrics import precision_score, recall_score, confusion_matrix, classification_report, roc_curve, precision_recall_curve
+from __future__ import division
+import warnings
+
+# 忽略告警
+warnings.filterwarnings(&#39;ignore&#39;) 
+"/>
 
 <!--[if lte IE 9]>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
@@ -326,9 +402,7 @@
 
     
     <div class="post-content">
-      
-
-<p>本文以kaggle上的Credit Card Fraud Detection为学习对象，利用XGBoost、Logistic Regression、Random Forest方法对信用卡欺诈进行识别，并将这三种模型的结果通过投票的方式进行聚合得到最终的结果。</p>
+      <p>本文以kaggle上的Credit Card Fraud Detection为学习对象，利用XGBoost、Logistic Regression、Random Forest方法对信用卡欺诈进行识别，并将这三种模型的结果通过投票的方式进行聚合得到最终的结果。</p>
 
 <h2 id="1-加载库并读入数据">1. 加载库并读入数据</h2>
 
@@ -1728,7 +1802,6 @@ plt.savefig('9.confusion_matrix_thresold_select.png')
 <p><img src="https://s2.ax1x.com/2019/11/07/MF0WBF.png" alt="png" /></p>
 
 <p>可见阈值选择0.5时测试集上的 F1 值最大。</p>
-
     </div>
 
     

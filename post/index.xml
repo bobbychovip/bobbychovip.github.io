@@ -17,7 +17,32 @@
       <pubDate>Thu, 07 Nov 2019 00:00:00 +0000</pubDate>
       
       <guid>https://bobbychovip.github.io/post/credit-card-fraud-detection/</guid>
-      <description>本文以kaggle上的Credit Card Fraud Detection为学习对象，利用XGBoost、Logistic Regression、Random F</description>
+      <description>&lt;p&gt;本文以kaggle上的Credit Card Fraud Detection为学习对象，利用XGBoost、Logistic Regression、Random Forest方法对信用卡欺诈进行识别，并将这三种模型的结果通过投票的方式进行聚合得到最终的结果。&lt;/p&gt;
+
+&lt;h2 id=&#34;1-加载库并读入数据&#34;&gt;1. 加载库并读入数据&lt;/h2&gt;
+
+&lt;h3 id=&#34;1-1-加载库&#34;&gt;1.1 加载库&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;# -*- coding: utf-8 -*-
+#!/usr/bin/env python
+
+import pandas as pd
+import numpy as np
+import seaborn as sns
+import matplotlib.pyplot as plt
+%matplotlib inline
+import itertools
+import xgboost as xgb
+from sklearn.linear_model import LogisticRegression
+from sklearn.ensemble import RandomForestClassifier, VotingClassifier
+from sklearn.model_selection import StratifiedKFold
+from sklearn.metrics import precision_score, recall_score, confusion_matrix, classification_report, roc_curve, precision_recall_curve
+from __future__ import division
+import warnings
+
+# 忽略告警
+warnings.filterwarnings(&#39;ignore&#39;) 
+&lt;/code&gt;&lt;/pre&gt;</description>
     </item>
     
     <item>
@@ -26,7 +51,15 @@
       <pubDate>Mon, 28 Oct 2019 00:00:00 +0000</pubDate>
       
       <guid>https://bobbychovip.github.io/post/monthly-shot-2/</guid>
-      <description>I&amp;rsquo;m just wating till the shine wears off. 趁着调休去了南麂岛，做点简单的记录。官方介绍南麂岛是“中国最美十大海岛”，属温州市平阳县管辖。往南麂岛有两条航线：瑞安码头-</description>
+      <description>&lt;blockquote&gt;
+&lt;p&gt;I&amp;rsquo;m just wating till  the shine wears off.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;趁着调休去了南麂岛，做点简单的记录。官方介绍南麂岛是“中国最美十大海岛”，属温州市平阳县管辖。往南麂岛有两条航线：瑞安码头-南麂码头和鳌江码头-南麂码头。鳌江码头位于平阳县鳌江镇，码头的对岸就是龙港市。说起来很有意思，龙港原本是苍南县下属的一个镇，和鳌江镇是平级的。今年九月龙港正式撤镇设市，一下子提高两个行政级别，风头盖过了母县苍南。我有同学家在苍南县，出于好奇，这次去南麂岛便订了去平阳的高铁。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://s2.ax1x.com/2019/10/28/K6NBrR.jpg&#34; alt=&#34;渔船&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;center&gt;出海前的渔船，鳌江镇↑&lt;/center&gt;&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -35,7 +68,15 @@
       <pubDate>Mon, 21 Oct 2019 00:00:00 +0000</pubDate>
       
       <guid>https://bobbychovip.github.io/post/monthly-shot-1/</guid>
-      <description>一个人逛了湖滨步行街和白塔公园，一台轻巧的Ricoh GR Ⅲ成了我每次出门必带的手边伴侣。 有时觉得自己摄影的门槛都没摸到，对光线、色彩、构图诸如</description>
+      <description>&lt;p&gt;一个人逛了湖滨步行街和白塔公园，一台轻巧的&lt;code&gt;Ricoh GR Ⅲ&lt;/code&gt;成了我每次出门必带的手边伴侣。有时觉得自己摄影的门槛都没摸到，对光线、色彩、构图诸如此类的摄影元素全无了解，几乎凭着直觉在拍照。没什么可拍的时候就强迫自己多观察，不轻易按下快门。等有空再多写写总结和经验吧~&lt;/p&gt;
+
+&lt;p&gt;先更新下上周收获的几张照片，起了个立flag的文题。&lt;/p&gt;
+
+&lt;h2 id=&#34;hubin-walk&#34;&gt;Hubin Walk&lt;/h2&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://s2.ax1x.com/2019/10/21/Kl8jTs.jpg&#34; alt=&#34;娃娃机店&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;center&gt;娃娃机店↑&lt;/center&gt;&lt;/p&gt;</description>
     </item>
     
   </channel>
