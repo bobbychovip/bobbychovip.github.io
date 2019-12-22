@@ -6,10 +6,28 @@
     <description>Recent content in Tags on 比海更深</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Sat, 09 Nov 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sat, 21 Dec 2019 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="https://bobbychovip.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>summary</title>
+      <link>https://bobbychovip.github.io/tags/summary/</link>
+      <pubDate>Sat, 21 Dec 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://bobbychovip.github.io/tags/summary/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>todolist</title>
+      <link>https://bobbychovip.github.io/tags/todolist/</link>
+      <pubDate>Sat, 21 Dec 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://bobbychovip.github.io/tags/todolist/</guid>
+      <description></description>
+    </item>
     
     <item>
       <title>Ricoh GR Ⅲ</title>
